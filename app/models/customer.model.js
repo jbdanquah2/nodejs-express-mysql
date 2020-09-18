@@ -2,9 +2,19 @@ const sql = require("./db.js");
 
 // constructor
 const Customer = function(customer) {
-  this.email = customer.email;
-  this.name = customer.name;
-  this.active = customer.active;
+  this.customerNumber = customer.customerNumber;
+  this.customerName = customer.customerName;
+  this.contactLastName = customer.contactLastName;
+  this.contactFirstName = customer.contactFirstName;
+  this.phone = customer.phone;
+  this.addressLine1 = customer.addressLine1;
+  this.addressLine2 = customer.addressLine2;
+  this.city = customer.city;
+  this.state = customer.state;
+  this.postalCode = customer.postalCode;
+  this.country = customer.country;
+  this.salesRepEmployeeNumber = customer.salesRepEmployeeNumber;
+  this.creditLimit = customer.creditLimit;
 };
 
 Customer.create = (newCustomer, result) => {
@@ -15,13 +25,13 @@ Customer.create = (newCustomer, result) => {
       return;
     }
 
-    console.log("created customer: ", { id: res.insertId, ...newCustomer });
-    result(null, { id: res.insertId, ...newCustomer });
+    console.log("created customer: ", { customerNumber: res.insertId, ...newCustomer });
+    result(null, { customerNumber: res.insertId, ...newCustomer });
   });
 };
 
-Customer.findById = (customerId, result) => {
-  sql.query(`SELECT * FROM customers WHERE id = ${customerId}`, (err, res) => {
+Customer.findById = (customerNumber, result) => {
+  sql.query(`SELECT * FROM customers WHERE customerNumber = ${customerNumber}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -52,10 +62,10 @@ Customer.getAll = result => {
   });
 };
 
-Customer.updateById = (id, customer, result) => {
+Customer.updateById = (id, customer, result) => {                                                          
   sql.query(
-    "UPDATE customers SET email = ?, name = ?, active = ? WHERE id = ?",
-    [customer.email, customer.name, customer.active, id],
+    "UPDATE customers SET customerNumber = ?, customerName = ?, contactLastName = ?, contactFirstName = ?, phone = ?, addressLine1 = ?, addressLine2 = ?, city = ?, state = ?, postalCode = ?, country = ?, salesRepEmployeeNumber = ?, creditLimit =?  WHERE customerNumber = ?",
+    [customer.customerNumber, customer.customerName, customer.contactLastName, customer.contactFirstName, customer.phone, customer.addressLine1, customer.addressLine2, customer.city, customer.state, customer.postalCode, customer.country, customer.salesRepEmployeeNumber, customer.creditLimit, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
